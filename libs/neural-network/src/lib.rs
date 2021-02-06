@@ -68,6 +68,8 @@ mod tests {
 
         #[test]
         fn test() {
+            use crate::neuron::Neuron;
+
             let layers = (
                 Layer::new(vec![
                     Neuron::new(0.0, vec![-0.5, -0.4, -0.3]),
