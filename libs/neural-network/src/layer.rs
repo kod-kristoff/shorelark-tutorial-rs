@@ -1,5 +1,5 @@
 use crate::neuron::Neuron;
-use rand::{Rng, RngCore};
+use rand::RngCore;
 
 #[derive(Clone, Debug)]
 pub struct Layer {

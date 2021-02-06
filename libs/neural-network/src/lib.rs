@@ -1,7 +1,7 @@
-pub use self::layer_topology::*;
+pub use self::layer_topology::LayerTopology;
 
-use self::{layer::*, neuron::*};
-use rand::{Rng, RngCore};
+use self::layer::Layer;
+use rand::RngCore;
 
 mod layer;
 mod layer_topology;
