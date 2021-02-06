@@ -1,12 +1,11 @@
-
 pub use self::layer_topology::*;
 
 use self::{layer::*, neuron::*};
 use rand::{Rng, RngCore};
 
-mod neuron;
 mod layer;
 mod layer_topology;
+mod neuron;
 
 #[derive(Clone, Debug)]
 pub struct Network {
@@ -17,22 +16,13 @@ impl Network {
     pub fn new(layers: Vec<Layer>) -> Self {
         assert!(!layers.is_empty());
         Self { layers }
-    } 
-    pub fn random(
-        layers: &[LayerTopology],
-        mut rng: &mut dyn RngCore,
-    ) -> Self {
+    }
+    pub fn random(layers: &[LayerTopology], mut rng: &mut dyn RngCore) -> Self {
         assert!(layers.len() > 1);
-        
+
         let layers = layers
             .windows(2)
-            .map(|layers| {
-                Layer::random(
-                    layers[0].neurons,
-                    layers[1].neurons,
-                    &mut rng
-                )
-            })
+            .map(|layers| Layer::random(layers[0].neurons, layers[1].neurons, &mut rng))
             .collect();
 
         Self { layers }
@@ -51,8 +41,8 @@ mod tests {
 
     mod random {
         use super::*;
-        use rand_chacha::ChaCha8Rng;
         use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
         fn test() {
@@ -63,8 +53,8 @@ mod tests {
                     LayerTopology { neurons: 3 },
                     LayerTopology { neurons: 2 },
                     LayerTopology { neurons: 1 },
-                ], 
-                &mut rng
+                ],
+                &mut rng,
             );
 
             assert_eq!(network.layers.len(), 2);

@@ -1,6 +1,5 @@
-
-use rand::{Rng, RngCore};
 use crate::neuron::Neuron;
+use rand::{Rng, RngCore};
 
 #[derive(Clone, Debug)]
 pub struct Layer {
@@ -12,11 +11,7 @@ impl Layer {
         Self { neurons }
     }
 
-    pub fn random(
-        input_neurons: usize,
-        output_neurons: usize,
-        mut rng: &mut dyn RngCore
-    ) -> Self {
+    pub fn random(input_neurons: usize, output_neurons: usize, mut rng: &mut dyn RngCore) -> Self {
         let neurons = (0..output_neurons)
             .map(|_| Neuron::random(input_neurons, &mut rng))
             .collect();
@@ -36,11 +31,10 @@ impl Layer {
 mod tests {
     use super::*;
 
-
     mod random {
         use super::*;
-        use rand_chacha::ChaCha8Rng;
         use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
         fn test() {
@@ -61,15 +55,9 @@ mod tests {
                 &[-0.5351684, 0.069369555, -0.7648182],
             ];
 
-            approx::assert_relative_eq!(
-                actual_biases.as_slice(),
-                expected_biases.as_slice()
-            );
+            approx::assert_relative_eq!(actual_biases.as_slice(), expected_biases.as_slice());
 
-            approx::assert_relative_eq!(
-                actual_weights.as_slice(),
-                expected_weights.as_slice()
-            );
+            approx::assert_relative_eq!(actual_weights.as_slice(), expected_weights.as_slice());
         }
     }
 

@@ -13,14 +13,11 @@ impl Neuron {
         Self { bias, weights }
     }
 
-    pub fn random(
-        output_size: usize,
-        rng: &mut dyn RngCore,
-    ) -> Self {
+    pub fn random(output_size: usize, rng: &mut dyn RngCore) -> Self {
         let bias = rng.gen_range(-1.0..=1.0);
 
         let weights = (0..output_size)
-            .map(|_| rng.gen_range(-1.0..=1.0) )
+            .map(|_| rng.gen_range(-1.0..=1.0))
             .collect();
 
         Self { bias, weights }
@@ -41,11 +38,10 @@ impl Neuron {
 mod tests {
     use super::*;
 
-
     mod random {
         use super::*;
-        use rand_chacha::ChaCha8Rng;
         use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
 
         #[test]
         fn test() {
@@ -53,12 +49,9 @@ mod tests {
             let neuron = Neuron::random(4, &mut rng);
 
             approx::assert_relative_eq!(neuron.bias, -0.6255188);
-            approx::assert_relative_eq!(neuron.weights.as_slice(), [
-                0.67383957,
-                0.8181262,
-                0.26284897,
-                0.5238807,
-                ].as_ref()
+            approx::assert_relative_eq!(
+                neuron.weights.as_slice(),
+                [0.67383957, 0.8181262, 0.26284897, 0.5238807,].as_ref()
             );
         }
     }
@@ -71,10 +64,7 @@ mod tests {
             let neuron = Neuron::new(0.5, vec![-0.3, 0.8]);
 
             // Ensures `.max()` (our ReLU) works:
-            approx::assert_relative_eq!(
-                neuron.propagate(&[-10.0, -10.0]),
-                0.0,
-            );
+            approx::assert_relative_eq!(neuron.propagate(&[-10.0, -10.0]), 0.0,);
 
             // `0.5` and `1.0` chosen by a fair dice roll:
             approx::assert_relative_eq!(
