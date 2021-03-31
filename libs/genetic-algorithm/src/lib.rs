@@ -7,12 +7,14 @@ pub mod mutation;
 use crate::{
     crossover::CrossoverMethod,
     individual::Individual,
+    mutation::MutationMethod,
     selection::SelectionMethod,
 };
 
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
     crossover_method: Box<dyn CrossoverMethod>,
+    mutation_method: Box<dyn MutationMethod>,
 }
 
 impl<S> GeneticAlgorithm<S>
@@ -21,11 +23,13 @@ where
 {
     pub fn new(
         selection_method: S,
-        crossover_method: impl CrossoverMethod + 'static
+        crossover_method: impl CrossoverMethod + 'static,
+        mutation_method: impl MutationMethod + 'static,
     ) -> Self {
-        Self { 
-            selection_method, 
+        Self {
+            selection_method,
             crossover_method: Box::new(crossover_method),
+            mutation_method: Box::new(mutation_method),
         }
     }
 
@@ -38,7 +42,7 @@ where
         I: Individual,
     {
         assert!(!population.is_empty());
-        
+
         (0..population.len())
             .map(|_| {
                 let parent_a = self
@@ -54,7 +58,9 @@ where
                 let mut child = self
                     .crossover_method
                     .crossover(rng, parent_a, parent_b);
-                todo!()
+
+                self.mutation_method.mutate(rng, &mut child);
+                I::create(child)
             })
             .collect()
     }
@@ -69,6 +75,7 @@ mod tests {
     use crate::{
         individual::TestIndividual,
         selection::RouletteWheelSelection,
+        mutation::GaussianMutation,
         crossover::UniformCrossover,
     };
 
@@ -84,11 +91,12 @@ mod tests {
         let population = Vec::<TestIndividual>::default();
         let algo = GeneticAlgorithm::new(
             RouletteWheelSelection,
-            UniformCrossover
+            UniformCrossover,
+            GaussianMutation::new(0.5, 0.5),
         );
 
         algo.evolve(&mut rng, &population);
     }
 
-    
+
 }
