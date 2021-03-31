@@ -79,9 +79,10 @@ mod tests {
         crossover::UniformCrossover,
     };
 
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn individual(genes: &[f32]) -> TestIndividual {
+        let chromosome = genes.iter().cloned().collect();
+
+        TestIndividual::create(chromosome)
     }
 
     #[test]
@@ -98,5 +99,35 @@ mod tests {
         algo.evolve(&mut rng, &population);
     }
 
+    #[test]
+    fn test() {
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
+
+        let ga = GeneticAlgorithm::new(
+            RouletteWheelSelection::new(),
+            UniformCrossover::new(),
+            GaussianMutation::new(0.5, 0.5),
+        );
+
+        let mut population = vec![
+            individual(&[0.0, 0.0, 0.0]), // fitness = 0.0
+            individual(&[1.0, 1.0, 1.0]), // fitness = 3.0
+            individual(&[1.0, 2.0, 1.0]), // fitness = 4.0
+            individual(&[1.0, 2.0, 4.0]), // fitness = 7.0
+        ];
+
+        for _ in 0..10 {
+            population = ga.evolve(&mut rng, &population);
+        }
+
+        let expected_population = vec![
+            individual(&[1.6119734, 1.8159671, 0.31497368]),
+            individual(&[1.0151604, 1.1331394, 0.8526902]),
+            individual(&[2.1268358, 2.932069, 0.10471791]),
+            individual(&[0.77124745, 1.1331394, 0.9507327]),
+        ];
+
+        assert_eq!(population, expected_population);
+    }
 
 }
