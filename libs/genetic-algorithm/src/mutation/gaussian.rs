@@ -81,18 +81,32 @@ mod tests {
 
             #[test]
             fn does_not_change_the_original_chromosome() {
-                todo!();
+                let actual = actual(0.5);
+                let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+                approx::assert_relative_eq!(
+                    actual.as_slice(),
+                    expected.as_slice()
+                );
             }
         }
     }
 
     mod given_fifty_fifty_chance {
+        fn actual(coeff: f32) -> Vec<f32> {
+            super::actual(0.5, coeff)
+        }
+
         mod and_zero_coefficient {
             use super::*;
 
             #[test]
             fn does_not_change_the_original_chromosome() {
-                todo!();
+                let actual = actual(0.0);
+                let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+                approx::assert_relative_eq!(
+                    actual.as_slice(),
+                    expected.as_slice()
+                );
             }
         }
 
@@ -101,18 +115,32 @@ mod tests {
 
             #[test]
             fn slightly_changes_the_original_chromosome() {
-                todo!();
+                let actual = actual(0.5);
+                let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+                approx::assert_relative_eq!(
+                    actual.as_slice(),
+                    expected.as_slice()
+                );
             }
         }
     }
 
     mod given_max_chance {
+        fn actual(coeff: f32) -> Vec<f32> {
+            super::actual(1.0, coeff)
+        }
+
         mod and_zero_coefficient {
             use super::*;
 
             #[test]
             fn does_not_change_the_original_chromosome() {
-                todo!();
+                let actual = actual(0.0);
+                let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+                approx::assert_relative_eq!(
+                    actual.as_slice(),
+                    expected.as_slice()
+                );
             }
         }
 
@@ -121,7 +149,12 @@ mod tests {
 
             #[test]
             fn entirely_changes_the_original_chromosome() {
-                todo!();
+                let actual = actual(0.5);
+                let expected = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+                approx::assert_relative_eq!(
+                    actual.as_slice(),
+                    expected.as_slice()
+                );
             }
         }
     }
