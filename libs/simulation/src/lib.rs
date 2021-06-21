@@ -29,7 +29,7 @@ impl World {
             .collect();
         let food = (0..60)
             .map(|_| Food::random(rng))
-            .collect();,
+            .collect();
 
         Self { animals, food }
     }
@@ -52,7 +52,7 @@ pub struct Animal {
 
 impl Animal {
     pub fn random(rng: &mut dyn rand::RngCore) -> Self {
-        use rand::Rand;
+        use rand::Rng;
         Self {
             position: rng.gen(),
             rotation: rng.gen(),
@@ -76,7 +76,7 @@ pub struct Food {
 
 impl Food {
     pub fn random(rng: &mut dyn rand::RngCore) -> Self {
-        use rand::Rand;
+        use rand::Rng;
         Self {
             position: rng.gen(),
         }
